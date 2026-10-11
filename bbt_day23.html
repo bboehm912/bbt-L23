@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basic Broadcast Technology | Audio Seminar: Field Audio Critique</title>
+  <style>
+:root {
+  --primary: #15803d;
+  --primary-dark: #166534;
+  --primary-light: #f0fdf4;
+  --bg-main: #f8fafc;
+  --card-bg: #ffffff;
+  --text-dark: #0f172a;
+  --text-muted: #475569;
+  --border: #cbd5e1;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-main);
+  margin: 0;
+  padding: 20px;
+  color: var(--text-dark);
+}
+
+.container { max-width: 980px; margin: 0 auto; }
+
+.header-card {
+  background: var(--card-bg);
+  padding: 20px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  border-top: 5px solid var(--primary);
+}
+
+.header-flex { display: flex; justify-content: space-between; align-items: center; }
+.header-left { display: flex; align-items: center; gap: 18px; }
+.logo-box { width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; }
+.logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+.stamp-container { width: 110px; height: 110px; position: relative; }
+.stamp-photo {
+  position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 60px; height: 60px;
+  border-radius: 50%; object-fit: cover;
+  z-index: 1;
+}
+.stamp-svg {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+.tab-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  font-weight: bold;
+  font-size: 0.95em;
+  cursor: pointer;
+  color: #334155;
+}
+.tab-btn.active { background: var(--primary); color: #ffffff; border-color: var(--primary); }
+
+.card {
+  background: var(--card-bg);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.bellringer-box {
+  background: var(--primary-light);
+  border-left: 4px solid var(--primary);
+  padding: 14px 18px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.deck-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.std-badge {
+  background: #dcfce7;
+  color: var(--primary-dark);
+  font-size: 0.78em;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #bbf7d0;
+}
+
+.slide-stage {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+  min-height: 440px;
+}
+
+.slide { display: none; }
+.slide.active { display: block; }
+
+.slide-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.slide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+
+.slide-visual-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.callout-box {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  background: #f0fdf4;
+  border-left: 4px solid var(--primary);
+}
+
+.deck-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+.ctrl-btn {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 10px 22px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.ctrl-btn:disabled { background: #94a3b8; }
+
+.resource-card {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e2e8f0;
+}
+label { font-weight: bold; margin-bottom: 6px; display: block; }
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.submit-btn {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+  padding: 14px;
+  font-size: 1.05em;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.muted { color: var(--text-muted); }
+.italic { font-style: italic; }
+.subtitle { color: var(--text-muted); }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header-card">
+    <div class="header-flex">
+      <div class="header-left">
+        <div class="logo-box">
+          <img src="chisholm_logo.png" alt="Chisholm Logo" onerror="this.style.display='none'" />
+        </div>
+        <div>
+          <h2>Basic Broadcast Technology</h2>
+          <p class="subtitle">Unit 3: Scriptwriting Fundamentals — Audio Seminar: Field Audio Critique</p>
+        </div>
+      </div>
+
+      <div class="stamp-container">
+        <img class="stamp-photo" src="boehm_photo.jpg" alt="Instructor Photo" onerror="this.style.display='none'" />
+        <img class="stamp-svg" src="boehm-stamp.svg" alt="Classroom Stamp" onerror="this.style.display='none'" />
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('deck')">Deck</button>
+    <button class="tab-btn" onclick="switchTab('res')">Resource Hub</button>
+    <button class="tab-btn" onclick="switchTab('form')">Student Work Checkpoint</button>
+  </div>
+
+  <!-- TAB: DECK -->
+  <div id="deck-tab" class="card tab-content active">
+    <div class="bellringer-box">
+      <div>
+        <strong>Daily Bellringer Writing Prompt</strong>
+        <p id="bellringer-display" class="italic">Loading prompt...</p>
+      </div>
+      <button class="ctrl-btn" onclick="randomizeBellringer()">Shuffle</button>
+    </div>
+
+    <div class="deck-header">
+      <h3>Unit 3: Scriptwriting Fundamentals</h3>
+      <span id="slide-tracker" class="std-badge">Slide 1 of 12</span>
+    </div>
+
+    <div id="slide-stage" class="slide-stage">
+      <!-- Slides injected by script.js -->
+    </div>
+
+    <div class="deck-controls">
+      <button class="ctrl-btn" id="prev-btn" onclick="moveSlide(-1)" disabled>Previous</button>
+      <button class="ctrl-btn" id="next-btn" onclick="moveSlide(1)">Next</button>
+    </div>
+  </div>
+
+  <!-- TAB: RESOURCE HUB -->
+  <div id="res-tab" class="card tab-content">
+    <h3>Lesson Resource & Reference Hub</h3>
+    <p class="muted">Access official course references below.</p>
+    <div id="resource-list">
+      <!-- Resources injected by script.js -->
+    </div>
+  </div>
+
+  <!-- TAB: STUDENT WORK CHECKPOINT -->
+  <div id="form-tab" class="card tab-content">
+    <h3>Student Work Checkpoint & Reflection</h3>
+    <form id="checkpoint-form" onsubmit="event.preventDefault(); window.print();">
+      <!-- Dynamic form fields injected by script.js -->
+      <button type="submit" class="submit-btn">Print this page and turn into the Red Basket!</button>
+    </form>
+  </div>
+
+</div>
+
+<script>
+let currentSlide = 1;
+let totalSlides = 1;
+let bellringers = [];
+
+// Stock image pool for default visual slides
+const stockImagePool = [
+  'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=300&q=80', // Turtle / Nature
+  'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80', // Water / Earth-Diver
+  'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=300&q=80', // Ecology / Forest
+  'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=300&q=80', // Campfire / Orality
+  'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=300&q=80', // Literature / History
+  'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=300&q=80'  // Writing Workshop
+];
+
+// Emoji fallback pool
+const iconPool = ['🐢', '🌊', '🌱', '🗣️', '☯️', '📝'];
+
+function renderSlides(slides) {
+  const stage = document.getElementById('slide-stage');
+  stage.innerHTML = '';
+
+  slides.forEach((slide, index) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'slide' + (index === 0 ? ' active' : '');
+    wrapper.id = `slide-${index + 1}`;
+
+    // Priority 1: slide.image OR Stock Web Image
+    const imageUrl = slide.image || stockImagePool[index % stockImagePool.length];
+    // Fallback: slide.icon OR Emoji Pool
+    const fallbackEmoji = slide.icon || iconPool[index % iconPool.length];
+
+    const visualMediaHTML = `
+      <img src="${imageUrl}" 
+           alt="${slide.title}" 
+           style="width:110px;height:110px;object-fit:cover;border-radius:50%;border:3px solid var(--primary);" 
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+      <span style="font-size: 2.8em; display: none; margin-bottom: 8px;">${fallbackEmoji}</span>
+    `;
+
+    wrapper.innerHTML = `
+      <div class="slide-header">
+        <h3 class="slide-title">${slide.title}</h3>
+        <span class="std-badge">${slide.standard || ''}</span>
+      </div>
+      <div class="slide-grid">
+        <div class="slide-body">
+          <ul>
+            ${(slide.bullets || []).map(b => `<li>${b}</li>`).join('')}
+          </ul>
+          ${slide.callout ? `<div class="callout-box"><strong style="color: var(--primary-dark);">Key Takeaway:</strong> ${slide.callout}</div>` : ''}
+        </div>
+        <div class="slide-visual-card">
+          ${visualMediaHTML}
+          ${slide.visual_caption ? `<small style="color: var(--text-muted); display: block; font-size: 0.82em; margin-top: 6px;">${slide.visual_caption}</small>` : ''}
+        </div>
+      </div>
+    `;
+    stage.appendChild(wrapper);
+  });
+}
+function initLesson(data) {
+  bellringers = data.bellringers || [];
+  totalSlides = (data.slides || []).length || 1;
+
+  document.getElementById('slide-tracker').innerText = `Slide 1 of ${totalSlides}`;
+
+  renderSlides(data.slides || []);
+  renderResources(data.resources || []);
+  renderForm(data.form || []);
+
+  randomizeBellringer();
+}
+
+function randomizeBellringer() {
+  if (!bellringers.length) return;
+  const idx = Math.floor(Math.random() * bellringers.length);
+  document.getElementById('bellringer-display').innerText = bellringers[idx];
+}
+
+function moveSlide(dir) {
+  const newSlide = currentSlide + dir;
+  if (newSlide < 1 || newSlide > totalSlides) return;
+
+  document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+  currentSlide = newSlide;
+  document.getElementById(`slide-${currentSlide}`).classList.add('active');
+
+  document.getElementById('slide-tracker').innerText = `Slide ${currentSlide} of ${totalSlides}`;
+  document.getElementById('prev-btn').disabled = currentSlide === 1;
+  document.getElementById('next-btn').disabled = currentSlide === totalSlides;
+}
+
+function renderResources(resources) {
+  const container = document.getElementById('resource-list');
+  container.innerHTML = '';
+
+  let resourceList = [];
+
+  if (Array.isArray(resources)) {
+    resourceList = resources;
+  } else if (resources && typeof resources === 'object') {
+    if (Array.isArray(resources.buttons)) {
+      resourceList = resources.buttons;
+    } else if (Array.isArray(resources.files)) {
+      resourceList = resources.files;
+    } else if (Array.isArray(resources.items)) {
+      resourceList = resources.items;
+    } else if (resources.file || resources.link || resources.url) {
+      resourceList = [resources];
+    }
+  }
+
+  if (!resourceList.length && resources && typeof resources === 'object' && resources.title && (resources.file || resources.link || resources.url)) {
+    resourceList = [resources];
+  }
+
+  resourceList.forEach(res => {
+    const card = document.createElement('div');
+    card.className = 'resource-card';
+
+    if (typeof res === 'string') {
+      const cleanText = res.trim();
+      const isFile = /\.(pdf|docx?|pptx?|xlsx?)$/i.test(cleanText);
+      if (!isFile) return;
+
+      const label = cleanText.split('/').pop();
+      card.innerHTML = `
+        <div>
+          <strong>${label}</strong><br/>
+          <small>Repository file</small>
+        </div>
+        <a href="${cleanText}" target="_blank" rel="noopener noreferrer" class="ctrl-btn">Open Resource</a>
+      `;
+      container.appendChild(card);
+      return;
+    }
+
+    const resourceUrl = res.file || res.link || res.url || res.href || '#';
+    const resourceTitle = res.title || res.name || res.label || 'Resource Item';
+    const resourceDescription = res.description || res.summary || '';
+    const fileName = resourceUrl && typeof resourceUrl === 'string' ? resourceUrl.split('/').pop() : '';
+
+    card.innerHTML = `
+      <div>
+        <strong>${resourceTitle || fileName || 'Resource Item'}</strong><br/>
+        <small>${resourceDescription}</small>
+      </div>
+      ${resourceUrl && resourceUrl !== '#' ? `<a href="${resourceUrl}" target="_blank" rel="noopener noreferrer" class="ctrl-btn">Open Resource</a>` : ''}
+    `;
+    container.appendChild(card);
+  });
+}
+
+function renderForm(fields) {
+  const form = document.getElementById('checkpoint-form');
+  const submitBtn = form.querySelector('.submit-btn');
+  form.innerHTML = '';
+
+  const fieldList = Array.isArray(fields) ? fields : [];
+
+  fieldList.forEach(field => {
+    const group = document.createElement('div');
+    group.className = 'form-group';
+
+    const label = field.label || field.prompt || `Question ${field.field_id || ''}`.trim() || 'Question';
+    const id = `field_${(field.field_id || label).toString().replace(/\s+/g, '_').toLowerCase()}`;
+
+    let inputHTML = '';
+    if (field.type === 'short_answer' || field.type === 'short_text' || field.type === 'text') {
+      inputHTML = `<input type="text" id="${id}" ${field.required ? 'required' : ''} />`;
+    } else if (field.type === 'date') {
+      inputHTML = `<input type="date" id="${id}" ${field.required ? 'required' : ''} />`;
+    } else if (field.type === 'long_text' || field.type === 'quote_citation' || field.type === 'reflection') {
+      inputHTML = `<textarea id="${id}" rows="5" ${field.required ? 'required' : ''}></textarea>`;
+    } else if (field.type === 'multiple_choice' || field.type === 'true_false') {
+      const options = field.type === 'true_false' ? ['True', 'False'] : (field.options || []);
+      inputHTML = options.map((option, index) => `<label><input type="radio" id="${id}_${index}" name="${id}" value="${option}" ${field.required ? 'required' : ''} /> ${option}</label>`).join('<br/>');
+    } else if (field.type === 'checkbox') {
+      inputHTML = (field.options || []).map((option, index) => `<label><input type="checkbox" id="${id}_${index}" name="${id}" value="${option}" /> ${option}</label>`).join('<br/>');
+    } else if (field.type === 'rating_scale') {
+      inputHTML = `<select id="${id}">${(field.options || []).map(o => `<option>${o}</option>`).join('')}</select>`;
+    } else if (field.type === 'select_rubric') {
+      inputHTML = `<select id="${id}"><option>-- Select Rubric Benchmark Level --</option>${(field.options || []).map(o => `<option>${o}</option>`).join('')}</select>`;
+    } else if (field.type === 'checkbox_group' || field.type === 'multi_select') {
+      inputHTML = (field.options || []).map(o => `<label><input type="checkbox" name="${id}" value="${o}" /> ${o}</label>`).join('<br/>');
+    }
+
+    group.innerHTML = `<label for="${id}">${label}</label>${inputHTML}`;
+    form.appendChild(group);
+  });
+
+  if (submitBtn) form.appendChild(submitBtn);
+}
+
+function switchTab(key) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+
+  if (key === 'deck') {
+    document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    document.getElementById('deck-tab').classList.add('active');
+  } else if (key === 'res') {
+    document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    document.getElementById('res-tab').classList.add('active');
+  } else if (key === 'form') {
+    document.querySelectorAll('.tab-btn')[2].classList.add('active');
+    document.getElementById('form-tab').classList.add('active');
+  }
+}
+window.addEventListener('DOMContentLoaded', () => initLesson({"day": 23, "date": "Oct 2 (Friday)", "topic": "Audio Seminar: Field Audio Critique", "primary_focus": "Analyzing field recordings for clarity, levels, and background noise interference.", "core_objectives": ["Evaluate the efficacy of mic placement in challenging outdoor news environments."], "standards": ["CTB.03.02", "CTB.12.03"], "bellringers": ["What key audio flaw is most noticeable when a lavalier is clipped too close to a shirt collar?", "List two indicators that audio was recorded with inadequate wind protection.", "How can off-axis microphone aiming affect speech intelligibility?", "What is the objective of peer-critiquing field audio takes in news production?"], "slides": [{"title": "Welcome to the Audio Seminar", "standard": "CTB.03.02", "bullets": ["Peer review of field audio assets collected during Week 5 practical exercises.", "Constructive analysis of mic selection, positioning, and input gain calibration.", "Objective evaluation using standard broadcast quality rubrics."], "callout": "Critical listening skills are essential for identifying audio flaws before broadcasting."}, {"title": "Evaluation Criteria: Voice Intelligibility", "standard": "CTB.03.02", "bullets": ["Speech must sound natural, clear, and distinct without muffling or harshness.", "Consonants should remain sharp and distinct without generating severe plosive pops.", "Background noise must never overcome or mask vocal frequency clarity."], "callout": "Voice intelligibility is the absolute primary benchmark of broadcast news audio quality."}, {"title": "Diagnosing Wind Noise Artifacts", "standard": "CTB.03.02", "bullets": ["Wind distortion manifests as low-frequency overload thumps and distorted rumbles.", "Occurs when moving air overloads the mic diaphragm regardless of gain levels.", "Remediated using physical high-density foam or furry deadcat wind protection."], "callout": "Digital EQ cannot eliminate heavy physical wind distortion recorded on a bare mic element."}, {"title": "Evaluating Microphone Distance and Proximity Effect", "standard": "CTB.03.02", "bullets": ["Positioning directional mics too close to speakers artificially boosts low bass frequencies.", "Positioning mics too far increases ambient reverberation and thins out voice presence.", "Correct placement balances chest resonance with crisp vocal frequency detail."], "callout": "Proximity effect can make voiceovers sound boomy if directional mics are placed too close."}, {"title": "Critiquing Off-Axis Placement Problems", "standard": "CTB.03.02", "bullets": ["Pointing shotgun mics off-target attenuates high frequencies and causes hollow tone.", "Off-axis placement allows side background noise to overpower weak vocal signals.", "Requires continuous boom adjustments to keep moving subjects centered in sound pickup cones."], "callout": "Keep shotgun capsules pointed directly at the mouth sound source at all times."}, {"title": "Analyzing Gain Calibration and Clipping Flaws", "standard": "CTB.12.03", "bullets": ["Audit student audio samples for harsh digital clipping distortion artifacts.", "Identify tracks recorded at sub-optimal low levels with prominent electronic preamp hiss.", "Verify target peaks consistently reached the -12 dBFS to -6 dBFS standard range."], "callout": "Watch your meter history: consistent red light warnings indicate permanent digital distortion."}, {"title": "Assessing Ambient Noise Mitigation", "standard": "CTB.03.02", "bullets": ["Determine if environmental noise (traffic, HVAC, crowds) was properly controlled.", "Evaluate whether appropriate mic pickup patterns were selected for noisy zones.", "Verify if the physical orientation placed background noise in mic rejection zones."], "callout": "Work with location physics: point directional mic rejection dead-zones at noise sources."}, {"title": "Evaluating Room Tone Continuity", "standard": "CTB.12.03", "bullets": ["Review submitted 30-second room tone holds for unwanted movement or handling clicks.", "Check audio cuts in student edit packages to confirm seamless background continuity.", "Ensure crossfades were applied cleanly across dialogue edit cut boundaries."], "callout": "Room tone field takes must be completely clean and free of accidental crew movement."}, {"title": "Constructive Peer Review Framework", "standard": "CTB.03.02", "bullets": ["Identify specific technical issues using precise terminology (e.g., plosive, off-axis, clipping).", "Acknowledge strong technical aspects of field audio captures before highlighting flaws.", "Provide actionable hardware or technique solutions for every noted issue."], "callout": "Focus critique on technique and physics solutions rather than generalized opinions."}, {"title": "Case Study: Outdoor Wind & Traffic Interview", "standard": "CTB.03.02", "bullets": ["Analyze Sample Take A: Shotgun mic used without wind protection on a windy street.", "Analyze Sample Take B: Handheld dynamic mic used with wind foam close to mouth.", "Compare vocal clarity, background suppression, and overall usable signal fidelity."], "callout": "Take B demonstrates superior field performance by using dynamic proximity and wind protection."}, {"title": "Utilizing the Mic Placement Room Setup Template", "standard": "CTB.03.02", "bullets": ["Use diagramming templates to map room dimensions, acoustic reflections, and noise sources.", "Plot exact camera positions, talent placement, and microphone angles.", "Document pre-recording acoustic interventions like turning off HVAC or covering glass."], "callout": "Mapping physical acoustic environments prevents common field placement mistakes."}, {"title": "Seminar Wrap-Up & Unit 5 Action Plan", "standard": "CTB.12.03", "bullets": ["Summarize key insights gained from peer field audio evaluations.", "Complete assessment feedback forms for evaluated field audio assignments.", "Prepare audio assets for final Unit 5 audio editing and mix integrations."], "callout": "Apply lessons learned today to your upcoming news package final audio mix."}], "resources": "Mic Placement Room Setup Template", "form": [{"field_id": "q1", "label": "What technical audio issue occurs when a dynamic mic is held too close to a speaker's mouth?", "type": "multiple_choice", "options": ["Phase cancellation", "Proximity effect bass boost", "Aliasing", "Sample rate drop"]}, {"field_id": "q2", "label": "How does off-axis shotgun placement affect vocal sound quality?", "type": "short_answer"}, {"field_id": "q3", "label": "Identify the distinct acoustic signature of physical wind distortion on a microphone.", "type": "short_answer"}, {"field_id": "q4", "label": "Which tool provides physical wind protection for shotgun mics in high wind?", "type": "multiple_choice", "options": ["Pop filter", "Furry deadcat/windscreen", "Shock mount", "Cardioid pad"]}, {"field_id": "q5", "label": "Explain why low-frequency HVAC hums can ruin speech clarity in news field cuts.", "type": "short_answer"}, {"field_id": "q6", "label": "True or False: Severe digital audio clipping distortion can be easily removed during peer review.", "type": "true_false"}, {"field_id": "q7", "label": "What detail should be plotted on a Mic Placement Room Setup Template?", "type": "multiple_choice", "options": ["Camera lens price", "Acoustic noise sources & talent angles", "Video file format", "Editing computer RAM"]}, {"field_id": "q8", "label": "State two constructive feedback practices for critiquing peer field audio.", "type": "short_answer"}, {"field_id": "q9", "label": "What field setup adjustment best reduces background traffic noise during a street report?", "type": "short_answer"}, {"field_id": "q10", "label": "What target peak decibel range should peer reviewers verify during levels inspection?", "type": "multiple_choice", "options": ["0 to +6 dBFS", "-12 to -6 dBFS", "-30 to -20 dBFS", "-60 to -40 dBFS"]}]}));
+</script>
+</body>
+</html>
